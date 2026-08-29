@@ -1,4 +1,3 @@
-import path from "node:path"
 import { useMemo } from "react"
 import { Link, NavLink, useLocation } from "react-router-dom"
 
@@ -11,7 +10,7 @@ export default function Header() {
     
 
   return (
-    <header className="bg-slate-800">
+    <header className={isHome ? 'bg-[url(/bg.jpg)] bg-center bg-cover' : 'bg-slate-800'}>
         <div className="mx-auto container px-5 py-16">
             <div className="flex justify-between items-center">
                 <Link to="/">
