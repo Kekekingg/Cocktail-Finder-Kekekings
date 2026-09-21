@@ -1,21 +1,44 @@
 import { type StateCreator } from "zustand";
 import type { Recipe } from "../types";
+import { createRecipesSlice, type RecipesSliceType } from "./recipeSlice";
+
 
 export type FavoritesSliceType = {
     favorites: Recipe[]
     handleClickFavorite: (recipe: Recipe) => void
+    favoriteExist: (id: Recipe['idDrink']) => boolean
+    loadFromStorage: () => void
 }
 
-export const createFavoritesSlice : StateCreator<FavoritesSliceType> = (set, get) => ({
+/*
+  This <FavoritesSliceType & RecipesSliceType, [], [], FavoritesSliceType>
+  is because Zustand has very limited documentation for TypeScript.
+  This is called a "nested type" and is used for consuming data from another slice.
+*/
+export const createFavoritesSlice : StateCreator<FavoritesSliceType & RecipesSliceType ,[] ,[], FavoritesSliceType> = (set, get, api) => ({
     favorites: [],
     handleClickFavorite: (recipe) => {
-        if(get().favorites.some(favorite => favorite.idDrink === recipe.idDrink)) {
+        if(get().favoriteExist(recipe.idDrink)) {
             set((state) => ({
                 favorites: state.favorites.filter( favorite => favorite.idDrink !== recipe.idDrink)
             }))
         } else {
             set({
                 favorites: [...get().favorites, recipe]
+            })
+        }
+        createRecipesSlice(set, get, api).closeModal()
+        localStorage.setItem('favorites', JSON.stringify(get().favorites))
+    },
+
+    favoriteExist: (id) => {
+        return get().favorites.some(favorite => favorite.idDrink === id)
+    },
+    loadFromStorage: () => {
+        const storedFavorites = localStorage.getItem('favorites')
+        if(storedFavorites) {
+            set ({
+                favorites: JSON.parse(storedFavorites)
             })
         }
     }
