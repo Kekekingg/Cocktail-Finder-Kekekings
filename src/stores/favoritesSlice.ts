@@ -1,6 +1,7 @@
 import { type StateCreator } from "zustand";
 import type { Recipe } from "../types";
 import { createRecipesSlice, type RecipesSliceType } from "./recipeSlice";
+import { createNotificationSlice, type NotificationSliceType } from "./notificationSlice";
 
 
 export type FavoritesSliceType = {
@@ -15,16 +16,24 @@ export type FavoritesSliceType = {
   is because Zustand has very limited documentation for TypeScript.
   This is called a "nested type" and is used for consuming data from another slice.
 */
-export const createFavoritesSlice : StateCreator<FavoritesSliceType & RecipesSliceType ,[] ,[], FavoritesSliceType> = (set, get, api) => ({
+export const createFavoritesSlice : StateCreator<FavoritesSliceType & RecipesSliceType & NotificationSliceType ,[] ,[], FavoritesSliceType> = (set, get, api) => ({
     favorites: [],
     handleClickFavorite: (recipe) => {
         if(get().favoriteExist(recipe.idDrink)) {
             set((state) => ({
                 favorites: state.favorites.filter( favorite => favorite.idDrink !== recipe.idDrink)
             }))
+            createNotificationSlice(set, get, api).showNotification({
+                text: 'Removed from Favorites', 
+                error: false
+            })
         } else {
             set({
                 favorites: [...get().favorites, recipe]
+            })
+            createNotificationSlice(set, get, api).showNotification({
+                text: 'Added to Favorites', 
+                error: false
             })
         }
         createRecipesSlice(set, get, api).closeModal()
