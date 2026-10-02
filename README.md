@@ -1,76 +1,77 @@
-# React + TypeScript + Vite
+[README.md](https://github.com/user-attachments/files/32984597/README.md)
+# 🍹 Cocktail Finder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Español](./README.es.md) · 
 
-Currently, two official plugins are available:
+Cocktail Finder is a single-page app to search cocktail recipes by **ingredient** and **category**, view the full recipe in a modal, and save favorites that persist across sessions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Live demo:** https://cocktail-tracker-kekekings.netlify.app/
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Search drinks by name/ingredient and category (data from [TheCocktailDB](https://www.thecocktaildb.com/api.php)).
+- Recipe modal with ingredients, measures and instructions.
+- Add / remove favorites from the modal.
+- Favorites persisted in `localStorage` and restored on load.
+- Runtime validation of every API response with Zod.
+- Two routes: Home (`/`) and Favorites (`/favorites`).
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Area | Tools |
+|---|---|
+| UI | React 19, TypeScript, Tailwind CSS 4, Headless UI |
+| Routing | React Router 7 |
+| State | Zustand 5 (slice pattern + `devtools` middleware) |
+| HTTP | Axios |
+| Validation | Zod schemas (types inferred with `z.infer`) |
+| Tooling | Vite, ESLint |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Requirements: Node.js 20+ and npm.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/Kekekingg/Cocktail-Finder-Kekekings.git
+cd Cocktail-Finder-Kekekings
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+| Script | Description |
+|---|---|
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Type-check (`tsc -b`) and build for production |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+No API key or environment variables are needed: the app uses TheCocktailDB public test key (`1`).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
 ```
-# Cocktail-Finder-Kekekings
+src/
+├── components/   Header (search form + nav), DrinkCard, Modal
+├── layouts/      Layout (Header + Outlet + Modal, loads favorites)
+├── services/     RecipeService.ts  → API calls
+├── stores/       useAppStore.ts, recipeSlice.ts, favoritesSlice.ts
+├── types/        Types inferred from the Zod schemas
+├── utils/        recipes-schema.ts → Zod schemas
+├── views/        IndexPage, FavoritesPage
+├── router.tsx
+└── main.tsx
+```
+
+## Documentation
+
+- [Architecture](./docs/architecture.md)
+- [API & events reference](./docs/api-reference.md)
+- [Troubleshooting](./docs/troubleshooting.md)
+
+## Roadmap / known limitations
+
+See the "Known issues" section in the [troubleshooting guide](./docs/troubleshooting.md#known-issues).
+
+## Author
+
+**Keke** — Full Stack Developer · [Portfolio](https://portfolio-erik-reyes-keke.netlify.app) · [GitHub](https://github.com/Kekekingg)
