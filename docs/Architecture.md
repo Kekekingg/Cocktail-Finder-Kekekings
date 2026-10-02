@@ -1,7 +1,7 @@
-[architecture.md](https://github.com/user-attachments/files/32984714/architecture.md)
+[architecture.md](https://github.com/user-attachments/files/32984754/architecture.md)
 # Architecture
 
-[English](./es/architecture.md)
+[Español](./es/architecture.md) · **English**
 
 ## 1. Overview
 
